@@ -5,6 +5,7 @@ import ModifyInputAudio from '../views/InputAudio/Modify.vue'
 import ModifyAssistTools from '../views/AssistTools/Modify.vue'
 import ModifyShutter from '../views/Exposure/Modify.vue'
 import ModifyImage from '../views/Image/Modify.vue'
+import ModifyWhiteBalance from '../views/WhiteBalance/Modify.vue'
 
 Vue.use(VueRouter)
 
@@ -41,6 +42,11 @@ const routes = [
     path: '/modify_image',
     name: 'ModifyImage',
     component: ModifyImage
+  },
+  {
+    path: '/modify_white_balance',
+    name: 'ModifyWhiteBalance',
+    component: ModifyWhiteBalance
   },
 ]
 
