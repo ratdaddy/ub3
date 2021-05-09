@@ -9,6 +9,8 @@ You shouldn't need to restart the server but when you do save changes to a file 
 
 To see the application running in your browser, navigate to http://localhost:8080.
 
+To change the url to that of the camera, change `host_url` in [Camera.js](src/lib/Camera.js).
+
 ## Project setup
 ```
 yarn install
