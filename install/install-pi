@@ -1,4 +1,4 @@
-#!/bin/bash
+#!/usr/bin/bash
 
 sudo apt-get update
 curl -fsSL https://deb.nodesource.com/setup_14.x | sudo -E bash -

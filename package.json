@@ -6,7 +6,7 @@
     "serve": "vue-cli-service serve",
     "build": "vue-cli-service build",
     "lint": "vue-cli-service lint",
-    "bundle": "./bin/bundle.js"
+    "bundle": "node bin/bundle.js"
   },
   "dependencies": {
     "@vue-hero-icons/solid": "^1.7.2",

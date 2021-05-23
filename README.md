@@ -1,4 +1,9 @@
-# uglybox2
+# Ugly Box Webcontroller
+
+## Project setup
+```
+yarn install
+```
 
 ## Development setup
 Configure Visual Studio Code for Vue with [these instructions](https://code.visualstudio.com/docs/nodejs/vuejs-tutorial)
@@ -9,12 +14,7 @@ You shouldn't need to restart the server but when you do save changes to a file 
 
 To see the application running in your browser, navigate to http://localhost:8080.
 
-To change the url to that of the camera, change `host_url` in [Camera.js](src/lib/Camera.js).
-
-## Project setup
-```
-yarn install
-```
+To change the url to that of the camera, see the instructions below to specify the camera URL in `.env.local`
 
 ### Compiles and hot-reloads for development
 ```
@@ -34,7 +34,7 @@ yarn build
 yarn bundle
 ```
 
-### Prepare the SD card
+### Prepare the SD card (all these steps are done with SD card in a card reader on your dev computer)
 - Install RaspberryPi desktop image on the SD card. The [Raspberry Pi Imager](https://www.raspberrypi.org/software/) software works well for this.
 
 - Copy uglybox.zip to the boot partition.
@@ -44,12 +44,11 @@ MacOS:
 cp uglybox.zip /Volumes/boot
 ```
 
-Windows:
-```
-???
-```
+Windows: You can use file explorer to do this.
 
 - Set up [ssh](https://www.raspberrypi.org/documentation/remote-access/ssh/) (follow only step 3 to set up a headless Pi) and [wpa_supplicant](https://www.raspberrypi.org/documentation/configuration/wireless/headless.md) on the boot partition according to instructions.
+
+### Install on Pi
 
 - Install SD card into Pi and boot it. Once up ssh into the `pi` account on it and do the following:
 
@@ -62,7 +61,9 @@ cd uglybox
 
 - The last command should cause the Pi to reboot and when it comes back up it should be running the uglybox menu in kiosk mode
 
-## Temporary project setup
+Note, if you're repeating these steps `unzip uglybox.zip` may ask you whether you want to replace existing files. You should answer `A` to replace all files.
+
+## Temporary project setup (configure `.env.local`)
 
 Until the install script has auto discovery of the camera's SSID for wireless mode, the camera itself will need to be accessible on the network and the Ugly Box server configured with it's address. This can be accomplished by creating a `.env.local` file in this project's root directory (this file should never be checked in to git and is ignored by default). In it, add the following line (with appropriate camera IP address):
 
