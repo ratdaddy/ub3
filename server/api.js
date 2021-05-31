@@ -20,10 +20,24 @@ function set_camera_state(state) {
 
 router.get('/connection_status', (req, res) => {
   var state = get_camera_state()
-  if (state.wifi === 'connecting' && state.wifi_connection_started + 5000 < Date.now()) {
-    state.wifi_ssid = ''
-    state.wifi = 'failed_to_connect'
-    set_camera_state(state)
+  if (state.wifi === 'connecting') {
+    if (state.wifi_connection_started + 60000 < Date.now()) {
+      state.wifi_ssid = ''
+      state.wifi = 'failed_to_connect'
+      set_camera_state(state)
+    } else {
+      try {
+        var output = child_process.execSync('iwgetid').toString()
+      }
+      catch {
+        output = 'not connected'
+      }
+      if (output.match(RegExp(state.wifi_ssid))) {
+        state.wifi = 'connected'
+        delete state.wifi_connection_started
+        set_camera_state(state)
+      }
+    }
   }
   res.send(state)
 })
@@ -48,6 +62,9 @@ router.post('/camera_ssid', (req, res) => {
   state.wifi = 'connecting'
   state.wifi_connection_started = Date.now()
   set_camera_state(state)
+
+  child_process.execSync(`bin/wpa_edit ${req.body.ssid}`)
+
   res.send("ok")
 })
 
