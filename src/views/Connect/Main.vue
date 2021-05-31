@@ -12,6 +12,7 @@
 
 <script>
 import axios from 'axios'
+import Camera from '../../lib/Camera'
 
 export default {
   name: 'Connect',
@@ -35,6 +36,7 @@ export default {
           if (response.data.wifi === 'unconfigured') {
             this.$router.push({ name: 'SelectCameraAP' })
           } else if (response.data.wifi === 'connected') {
+            Camera.url = response.data.camera_url
             this.$router.push({ name: 'Home' })
           } else if (response.data.wifi === 'connecting') {
             setTimeout(this.get_connection_status, 1000)

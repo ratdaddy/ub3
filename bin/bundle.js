@@ -23,6 +23,7 @@ archive.file('install/uglybox.service', { name: 'uglybox/uglybox.service', mode:
 archive.file('install/autostart', { name: 'uglybox/autostart', mode: 0644 })
 archive.file('server/api.js', { name: 'uglybox/server/api.js', mode: 0644 })
 archive.file('server/bin/wpa_edit', { name: 'uglybox/bin/wpa_edit', mode: 0755 })
+archive.file('.env', { name: 'uglybox/.env', mode: 0644 })
 
 archive.directory('dist/', 'uglybox/dist')
 

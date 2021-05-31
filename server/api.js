@@ -2,13 +2,18 @@ var express = require('express')
 var router = express.Router()
 var fs = require('fs')
 var child_process = require('child_process')
+require('dotenv-flow').config()
 
 function get_camera_state() {
   try {
     return JSON.parse(fs.readFileSync('camera_state.json', 'utf-8'))
   }
   catch {
-    var state = { wifi: 'unconfigured', wifi_ssid: '' }
+    var state = {
+      wifi: 'unconfigured',
+      wifi_ssid: '',
+      camera_url: process.env.CAMERA_URL,
+    }
     set_camera_state(state)
     return state
   }
@@ -27,7 +32,15 @@ router.get('/connection_status', (req, res) => {
       set_camera_state(state)
     } else {
       try {
-        var output = child_process.execSync('iwgetid').toString()
+        if (process.env.MOCK_SERVER != 'true') {
+          var output = child_process.execSync('iwgetid').toString()
+        } else {
+          if (state.wifi_connection_started + 5000 < Date.now()) {
+            output = state.wifi_ssid
+          } else {
+            output = 'not connected'
+          }
+        }
       }
       catch {
         output = 'not connected'
@@ -43,17 +56,18 @@ router.get('/connection_status', (req, res) => {
 })
 
 router.get('/camera_ssid', (req, res) => {
-  var ssids = child_process.execSync("sudo iwlist wlan0 scan | grep ESSID | awk 'match($0, /\"ZCAM.*\"/) {print substr($0, RSTART+1, RLENGTH-2)}' | sort | uniq")
-    .toString()
-    .split('\n')
-    .filter((str) => { return str !== '' })
+  if (process.env.MOCK_SERVER != 'true') {
+    var ssids = child_process.execSync("sudo iwlist wlan0 scan | grep ESSID | awk 'match($0, /\"ZCAM.*\"/) {print substr($0, RSTART+1, RLENGTH-2)}' | sort | uniq")
+      .toString()
+      .split('\n')
+      .filter((str) => { return str !== '' })
 
-  res.send(ssids)
-  /*
-  var ssids = ['ZCAM-001']
-  var sleep = new Promise(resolve => setTimeout(resolve, 5000))
-  sleep.then(() => { res.send(ssids) })
-  */
+    res.send(ssids)
+  } else {
+    var ssids = ['ZCAM-003', 'ZCAM-004', 'ZCAM-005']
+    var sleep = new Promise(resolve => setTimeout(resolve, 5000))
+    sleep.then(() => { res.send(ssids) })
+  }
 })
 
 router.post('/camera_ssid', (req, res) => {
@@ -63,7 +77,9 @@ router.post('/camera_ssid', (req, res) => {
   state.wifi_connection_started = Date.now()
   set_camera_state(state)
 
-  child_process.execSync(`bin/wpa_edit ${req.body.ssid}`)
+  if (process.env.MOCK_SERVER != 'true') {
+    child_process.execSync(`bin/wpa_edit ${req.body.ssid}`)
+  }
 
   res.send("ok")
 })

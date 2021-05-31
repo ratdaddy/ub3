@@ -56,22 +56,23 @@ Windows: You can use file explorer to do this.
 cp /boot/uglybox.zip .
 unzip uglybox.zip
 cd uglybox
+```
+
+- At this point if you need to configure a camera URL other than the default one you can create a `.env.local` file in the `uglybox` directory and set your alternate URL there with a line like:
+
+```
+CAMERA_URL=http://alternate_camera_url
+```
+
+- Finally, to install the necessary software on the Pi:
+
+```
 ./install-pi
 ```
 
 - The last command should cause the Pi to reboot and when it comes back up it should be running the uglybox menu in kiosk mode
 
 Note, if you're repeating these steps `unzip uglybox.zip` may ask you whether you want to replace existing files. You should answer `A` to replace all files.
-
-## Temporary project setup (configure `.env.local`)
-
-Until the install script has auto discovery of the camera's SSID for wireless mode, the camera itself will need to be accessible on the network and the Ugly Box server configured with it's address. This can be accomplished by creating a `.env.local` file in this project's root directory (this file should never be checked in to git and is ignored by default). In it, add the following line (with appropriate camera IP address):
-
-```
-VUE_APP_CAMERA_URL=http://192.168.1.7
-```
-
-Do this prior to `yarn build` in the above packaging and installation sequence.
 
 ## Other esoteric development stuff
 
