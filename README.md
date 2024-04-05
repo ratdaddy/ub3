@@ -83,3 +83,7 @@ yarn lint
 
 ### Customize configuration
 See [Configuration Reference](https://cli.vuejs.org/config/).
+
+## Still photo capture
+
+API call is `GET /ctrl/still?action=cap`
