@@ -84,4 +84,10 @@ router.post('/camera_ssid', (req, res) => {
   res.send("ok")
 })
 
+router.get('/exit_ui', (_req, res) => {
+  //child_process.execSync('pkill -f chromium; true')
+  child_process.execSync('pkill -f firefox; true')
+  res.send("ok")
+})
+
 module.exports = router
